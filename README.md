@@ -111,47 +111,47 @@ Sellora/
 └── README.md
 ```
 
-## Deployment (Recommended: Web/Admin on Vercel + Backend on Render/Railway)
+## Deployment (All Three on Vercel)
 
-### 1) Deploy Backend (Render or Railway)
+This repo is a monorepo. Create **three separate Vercel projects**, each with its own Root Directory.
 
-Use the `backend/` folder as the project root.
+### 1) Backend (Vercel Functions)
+
+**Root Directory:** `backend/`
 
 **Env vars**
 - `MONGODB_URI` (required)
-- `PORT` (optional, platform usually sets this)
 
-**Start command**
-- `npm start`
+**Notes**
+- The API runs as a serverless function under `/api/*` using `backend/api/[...path].js`.
+- Your frontend base URL should be the backend project URL, e.g. `https://your-backend.vercel.app`.
 
-After deploy, note your backend URL, e.g. `https://your-backend.onrender.com`.
+### 2) Web (Vercel)
 
-### 2) Deploy Web (Vercel)
-
-Create a Vercel project with **Root Directory** set to `web/`.
+**Root Directory:** `web/`
 
 **Build settings**
 - Build command: `npm run build`
 - Output directory: `dist`
 
 **Env vars**
-- `VITE_API_BASE_URL` = `https://your-backend.onrender.com`
+- `VITE_API_BASE_URL` = `https://your-backend.vercel.app`
 
-### 3) Deploy Admin (Vercel)
+### 3) Admin (Vercel)
 
-Create another Vercel project with **Root Directory** set to `admin/`.
+**Root Directory:** `admin/`
 
 **Build settings**
 - Build command: `npm run build`
 - Output directory: `dist`
 
 **Env vars**
-- `VITE_ADMIN_API_BASE_URL` = `https://your-backend.onrender.com`
+- `VITE_ADMIN_API_BASE_URL` = `https://your-backend.vercel.app`
 
 ### Notes
 
-- Both frontends are Vite SPAs. The included `vercel.json` in each app adds a rewrite so client-side routes don’t 404 on refresh.
-- If you change backend URL, update the Vercel env vars and redeploy.
+- The included `vercel.json` files in `web/` and `admin/` add SPA rewrites so client-side routes don’t 404 on refresh.
+- If you change the backend URL, update the Vercel env vars and redeploy the frontends.
 
 ## License
 
