@@ -111,6 +111,48 @@ Sellora/
 └── README.md
 ```
 
+## Deployment (Recommended: Web/Admin on Vercel + Backend on Render/Railway)
+
+### 1) Deploy Backend (Render or Railway)
+
+Use the `backend/` folder as the project root.
+
+**Env vars**
+- `MONGODB_URI` (required)
+- `PORT` (optional, platform usually sets this)
+
+**Start command**
+- `npm start`
+
+After deploy, note your backend URL, e.g. `https://your-backend.onrender.com`.
+
+### 2) Deploy Web (Vercel)
+
+Create a Vercel project with **Root Directory** set to `web/`.
+
+**Build settings**
+- Build command: `npm run build`
+- Output directory: `dist`
+
+**Env vars**
+- `VITE_API_BASE_URL` = `https://your-backend.onrender.com`
+
+### 3) Deploy Admin (Vercel)
+
+Create another Vercel project with **Root Directory** set to `admin/`.
+
+**Build settings**
+- Build command: `npm run build`
+- Output directory: `dist`
+
+**Env vars**
+- `VITE_ADMIN_API_BASE_URL` = `https://your-backend.onrender.com`
+
+### Notes
+
+- Both frontends are Vite SPAs. The included `vercel.json` in each app adds a rewrite so client-side routes don’t 404 on refresh.
+- If you change backend URL, update the Vercel env vars and redeploy.
+
 ## License
 
 ISC
