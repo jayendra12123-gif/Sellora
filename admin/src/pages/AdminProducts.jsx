@@ -17,6 +17,7 @@ export default function AdminProducts() {
   const [products, setProducts] = useState([]);
   const [form, setForm] = useState(emptyForm);
   const [editingId, setEditingId] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [query, setQuery] = useState("");
@@ -85,11 +86,22 @@ export default function AdminProducts() {
       image: product.image || "",
       saleDiscountPercent: product.saleDiscountPercent ?? "",
     });
+    setIsModalOpen(true);
   };
 
   const resetForm = () => {
     setEditingId(null);
     setForm(emptyForm);
+  };
+
+  const openNewProduct = () => {
+    resetForm();
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    resetForm();
   };
 
   const onSubmit = async (e) => {
@@ -113,7 +125,7 @@ export default function AdminProducts() {
       }
 
       await loadProducts();
-      resetForm();
+      closeModal();
     } catch (err) {
       setError(err.message || "Failed to save product");
     }
@@ -131,118 +143,21 @@ export default function AdminProducts() {
 
   return (
     <div className="grid" style={{ gap: 20 }}>
-      <div className="card">
-        <div className="section-header">
-          <div>
-            <div className="section-kicker">Inventory Studio</div>
-            <div className="section-title">
-              {editingId ? "Edit Product" : "Add Product"}
-            </div>
-          </div>
-          <div className="section-meta">
-            Curate pricing, stock, and merchandising
-          </div>
-        </div>
-        {error && (
-          <div style={{ color: "#c0392b", marginBottom: 12 }}>{error}</div>
-        )}
-        <form onSubmit={onSubmit} className="form-grid product-form">
-          <input
-            name="id"
-            value={form.id}
-            onChange={onChange}
-            placeholder="ID (optional)"
-            className="input"
-          />
-          <input
-            name="title"
-            value={form.title}
-            onChange={onChange}
-            placeholder="Title"
-            required
-            className="input"
-          />
-          <input
-            name="category"
-            value={form.category}
-            onChange={onChange}
-            placeholder="Category"
-            required
-            className="input"
-          />
-          <input
-            name="price"
-            value={form.price}
-            onChange={onChange}
-            placeholder="Price"
-            type="number"
-            step="0.01"
-            required
-            className="input"
-          />
-          <input
-            name="rating"
-            value={form.rating}
-            onChange={onChange}
-            placeholder="Rating"
-            type="number"
-            step="0.1"
-            className="input"
-          />
-          <input
-            name="stock"
-            value={form.stock}
-            onChange={onChange}
-            placeholder="Stock"
-            type="number"
-            className="input"
-          />
-          <input
-            name="image"
-            value={form.image}
-            onChange={onChange}
-            placeholder="Image URL"
-            className="input"
-          />
-          <input
-            name="saleDiscountPercent"
-            value={form.saleDiscountPercent}
-            onChange={onChange}
-            placeholder="Sale Discount %"
-            type="number"
-            className="input"
-          />
-          <textarea
-            name="description"
-            value={form.description}
-            onChange={onChange}
-            placeholder="Description"
-            className="textarea span-2"
-          />
-        </form>
-        <div className="form-actions" style={{ marginTop: 12 }}>
-          <button type="submit" className="button" style={{ padding: 12 , width : 180 }}>
-            {editingId ? "Update" : "Create"}
-          </button>
-          {editingId && (
-            <button
-              type="button"
-              onClick={resetForm}
-              className="button secondary"
-              style={{ padding: 12 , width : 180 }}
-            >
-              Cancel
-            </button>
-          )}
-        </div>
-      </div>
-
-      <div className="card">
-        <div className="section-header">
+      <div className="card catalog-card">
+        <div
+          className="section-header products-header"
+          style={{ marginBottom: 12 }}
+        >
           <div>
             <div className="section-kicker">Catalog View</div>
             <div className="section-title">All Products</div>
+            <div className="products-actions">
+              <button className="button" onClick={openNewProduct}>
+                Add Product
+              </button>
+            </div>
           </div>
+
           <div className="filters">
             <select
               className="select"
@@ -265,6 +180,7 @@ export default function AdminProducts() {
             <span className="badge">{filteredProducts.length} items</span>
           </div>
         </div>
+
         {loading ? (
           <div style={{ color: "#6b6b6b" }}>Loading...</div>
         ) : (
@@ -341,6 +257,121 @@ export default function AdminProducts() {
           </div>
         )}
       </div>
+
+      {isModalOpen && (
+        <div className="modal-backdrop" onClick={closeModal}>
+          <div
+            className="modal-card"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="modal-header">
+              <div>
+                <div className="section-kicker">Inventory Studio</div>
+                <div className="section-title">
+                  {editingId ? "Edit Product" : "Add Product"}
+                </div>
+              </div>
+              <div className="section-meta">
+                Curate pricing, stock, and merchandising
+              </div>
+            </div>
+            {error && (
+              <div style={{ color: "#c0392b", marginBottom: 12 }}>{error}</div>
+            )}
+            <form onSubmit={onSubmit} className="form-grid product-form">
+              <input
+                name="id"
+                value={form.id}
+                onChange={onChange}
+                placeholder="ID (optional)"
+                className="input"
+              />
+              <input
+                name="title"
+                value={form.title}
+                onChange={onChange}
+                placeholder="Title"
+                required
+                className="input"
+              />
+              <input
+                name="category"
+                value={form.category}
+                onChange={onChange}
+                placeholder="Category"
+                required
+                className="input"
+              />
+              <input
+                name="price"
+                value={form.price}
+                onChange={onChange}
+                placeholder="Price"
+                type="number"
+                step="0.01"
+                required
+                className="input"
+              />
+              <input
+                name="rating"
+                value={form.rating}
+                onChange={onChange}
+                placeholder="Rating"
+                type="number"
+                step="0.1"
+                className="input"
+              />
+              <input
+                name="stock"
+                value={form.stock}
+                onChange={onChange}
+                placeholder="Stock"
+                type="number"
+                className="input"
+              />
+              <input
+                name="image"
+                value={form.image}
+                onChange={onChange}
+                placeholder="Image URL"
+                className="input"
+              />
+              <input
+                name="saleDiscountPercent"
+                value={form.saleDiscountPercent}
+                onChange={onChange}
+                placeholder="Sale Discount %"
+                type="number"
+                className="input"
+              />
+              <textarea
+                name="description"
+                value={form.description}
+                onChange={onChange}
+                placeholder="Description"
+                className="textarea span-2"
+              />
+              <div className="form-actions" style={{ marginTop: 12 }}>
+                <button
+                  type="submit"
+                  className="button"
+                  style={{ padding: 12, width: 180 }}
+                >
+                  {editingId ? "Update" : "Create"}
+                </button>
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className="button secondary"
+                  style={{ padding: 12, width: 180 }}
+                >
+                  Close
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

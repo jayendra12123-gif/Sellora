@@ -27,6 +27,32 @@ Sellora is a full-stack e-commerce platform with a customer-facing web app, an a
 - npm 9+
 - MongoDB (local or Atlas)
 
+## Environment Variables
+
+### Backend (`backend/.env`)
+
+- `MONGODB_URI` (required)
+- `PORT` (optional, default 5000)
+- `CORS_ORIGINS` (optional, comma-separated list of allowed origins)
+
+Example:
+
+```
+MONGODB_URI=mongodb+srv://<user>:<password>@<cluster>.mongodb.net/sellora
+PORT=5000
+CORS_ORIGINS=http://localhost:5173,http://localhost:5174
+```
+
+### Web (`web/.env`)
+
+- `VITE_API_URL` (preferred) full API URL that ends with `/api`
+- or `VITE_API_BASE_URL` (fallback) base URL (the app appends `/api`)
+
+### Admin (`admin/.env`)
+
+- `VITE_API_URL` (preferred) full API URL that ends with `/api`
+- or `VITE_ADMIN_API_BASE_URL` (fallback) base URL (the app appends `/api`)
+
 ## Quick Start (Backend + Web)
 
 ```bash
@@ -111,47 +137,56 @@ Sellora/
 └── README.md
 ```
 
-## Deployment (All Three on Vercel)
+## Deployment (Backend on Render + Web/Admin on Vercel)
 
-This repo is a monorepo. Create **three separate Vercel projects**, each with its own Root Directory.
+### 1) Deploy Backend (Render)
 
-### 1) Backend (Vercel Functions)
-
-**Root Directory:** `backend/`
+Use the `backend/` folder as the project root.
 
 **Env vars**
 - `MONGODB_URI` (required)
+- `CORS_ORIGINS` (optional, comma-separated list of allowed origins)
 
-**Notes**
-- The API runs as a serverless function under `/api/*` using `backend/api/[...path].js`.
-- Your frontend base URL should be the backend project URL, e.g. `https://your-backend.vercel.app`.
+**Start command**
+- `npm start`
 
-### 2) Web (Vercel)
+After deploy, note your backend URL, e.g. `https://sellora-5f0s.onrender.com`.
 
-**Root Directory:** `web/`
+### 2) Deploy Web (Vercel)
 
-**Build settings**
-- Build command: `npm run build`
-- Output directory: `dist`
-
-**Env vars**
-- `VITE_API_BASE_URL` = `https://your-backend.vercel.app`
-
-### 3) Admin (Vercel)
-
-**Root Directory:** `admin/`
+Create a Vercel project with **Root Directory** set to `web/`.
 
 **Build settings**
 - Build command: `npm run build`
 - Output directory: `dist`
 
 **Env vars**
-- `VITE_ADMIN_API_BASE_URL` = `https://your-backend.vercel.app`
+- `VITE_API_URL` = `https://sellora-5f0s.onrender.com/api`
+
+### 3) Deploy Admin (Vercel)
+
+Create another Vercel project with **Root Directory** set to `admin/`.
+
+**Build settings**
+- Build command: `npm run build`
+- Output directory: `dist`
+
+**Env vars**
+- `VITE_API_URL` = `https://sellora-5f0s.onrender.com/api`
 
 ### Notes
 
-- The included `vercel.json` files in `web/` and `admin/` add SPA rewrites so client-side routes don’t 404 on refresh.
+- Both frontends are Vite SPAs. The included `vercel.json` in each app adds a rewrite so client-side routes don’t 404 on refresh.
 - If you change the backend URL, update the Vercel env vars and redeploy the frontends.
+
+## Troubleshooting
+
+- **Frontend shows “Not Found” on refresh**  
+  Ensure `web/vercel.json` and `admin/vercel.json` are present for SPA rewrites.
+- **API calls failing**  
+  Verify `VITE_API_URL` is set in Vercel and redeploy.
+- **CORS errors**  
+  Add your Vercel domains to `CORS_ORIGINS` on the backend and redeploy Render.
 
 ## License
 
