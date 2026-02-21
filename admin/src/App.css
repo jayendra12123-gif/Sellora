@@ -180,6 +180,10 @@ a {
   box-shadow: var(--shadow);
 }
 
+.catalog-card {
+  padding-top: 12px;
+}
+
 .grid {
   display: grid;
   gap: 16px;
@@ -408,6 +412,24 @@ a {
   flex-wrap: wrap;
 }
 
+.products-header {
+  align-items: flex-start;
+}
+
+.products-actions {
+  margin-top: 18px;
+  margin-bottom: 10px;
+}
+
+.collections-header {
+  align-items: center;
+}
+
+.collections-actions {
+  margin-top: -8px;
+  margin-bottom: 8px;
+}
+
 .section-kicker {
   font-size: 0.7rem;
   text-transform: uppercase;
@@ -430,6 +452,38 @@ a {
   display: flex;
   gap: 10px;
   align-items: center;
+  flex-wrap: wrap;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 18, 18, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 50;
+}
+
+.modal-card {
+  background: var(--panel);
+  border-radius: var(--radius);
+  border: 1px solid var(--ink-soft);
+  box-shadow: var(--shadow);
+  padding: 22px;
+  width: min(920px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
   flex-wrap: wrap;
 }
 

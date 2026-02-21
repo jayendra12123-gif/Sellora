@@ -73,7 +73,6 @@ export default function AdminUsers() {
                         onChange={(e) => updateUser(user._id, { role: e.target.value })}
                       >
                         <option value="customer">customer</option>
-                        <option value="admin">admin</option>
                       </select>
                     </td>
                     <td>

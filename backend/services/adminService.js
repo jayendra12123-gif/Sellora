@@ -151,7 +151,8 @@ const updateOrderStatus = async (orderId, status) => {
   return order;
 };
 
-const listUsers = async () => User.find({}).select('-passwordHash').sort({ createdAt: -1 }).lean();
+const listUsers = async () =>
+  User.find({ role: { $ne: 'admin' } }).select('-passwordHash').sort({ createdAt: -1 }).lean();
 
 const updateUser = async (userId, payload) => {
   const updates = {};
@@ -173,7 +174,7 @@ const updateUser = async (userId, payload) => {
   }
 
   if (payload?.role !== undefined) {
-    if (!['customer', 'admin'].includes(payload.role)) {
+    if (!['customer'].includes(payload.role)) {
       throw new HttpError(400, 'Invalid role');
     }
     updates.role = payload.role;
