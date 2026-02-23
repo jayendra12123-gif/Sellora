@@ -21,12 +21,10 @@ export default function Button({
       {...props}
     >
       {isLoading && (
-        <div className="relative w-4 h-4">
-          <div className="absolute inset-0 rounded-full border-2 border-current border-t-transparent animate-spin" />
-          <div
-            className="absolute rounded-full border border-current border-b-transparent animate-spin"
-            style={{ inset: 3, animationDuration: '1.1s' }}
-          />
+        <div className="sellora-spinner" style={{ '--size': '16px', '--color': 'currentColor' }}>
+          {Array.from({ length: 12 }).map((_, index) => (
+            <span key={index} />
+          ))}
         </div>
       )}
       {children}

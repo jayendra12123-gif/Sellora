@@ -59,7 +59,11 @@ export default function Login() {
             <button className="button" type="submit" disabled={loading}>
               {loading ? (
                 <span className="button-spinner-wrap">
-                  <span className="admin-button-spinner" />
+                  <span className="sellora-spinner" style={{ '--size': '16px', '--color': 'currentColor' }}>
+                    {Array.from({ length: 12 }).map((_, index) => (
+                      <span key={index} />
+                    ))}
+                  </span>
                   Signing in...
                 </span>
               ) : (
