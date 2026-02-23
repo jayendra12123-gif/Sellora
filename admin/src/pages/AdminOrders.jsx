@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { adminGet, adminPut } from '../api';
+import Loader from '../components/Loader';
 
 const statusOptions = ['processing', 'pending', 'shipped', 'delivered', 'cancelled'];
 
@@ -40,7 +41,7 @@ export default function AdminOrders() {
         <div style={{ fontSize: '1.05rem', fontWeight: 600, marginBottom: 12 }}>Orders</div>
         {error && <div style={{ color: '#c0392b', marginBottom: 12 }}>{error}</div>}
         {loading ? (
-          <div style={{ color: '#6b6b6b' }}>Loading...</div>
+          <Loader />
         ) : (
           <div style={{ display: 'grid', gap: 16 }}>
             {orders.map((order) => (

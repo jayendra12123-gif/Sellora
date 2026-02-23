@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchProducts, selectAllProducts, selectProductsStatus } from '../features/products/productsSlice';
 import Button from '../components/ui/Button';
 import Section from '../components/ui/Section';
+import Loader from '../components/Loader';
 import ProductCard from '../components/ProductCard';
 import { API_URL } from '../config/api';
 
@@ -161,9 +162,7 @@ const Home = () => {
       {/* Featured Products */}
       <Section title="Featured Collection" subtitle="Shop our latest arrivals" centered>
         {status === 'loading' ? (
-          <div className="text-center py-12">
-            <p className="text-[#666666]">Loading...</p>
-          </div>
+          <Loader />
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
             {featuredProducts.map((product) => (

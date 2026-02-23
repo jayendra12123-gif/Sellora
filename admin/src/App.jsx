@@ -10,6 +10,7 @@ import AdminUsers from './pages/AdminUsers';
 import AdminCollections from './pages/AdminCollections';
 import AdminContent from './pages/AdminContent';
 import Login from './pages/Login';
+import Loader from './components/Loader';
 
 export default function App() {
   const [checked, setChecked] = useState(false);
@@ -30,7 +31,11 @@ export default function App() {
   }, []);
 
   if (!checked) {
-    return <div className="app-loading">Checking session...</div>;
+    return (
+      <div className="app-loading">
+        <Loader />
+      </div>
+    );
   }
 
   const user = getAdminUser();

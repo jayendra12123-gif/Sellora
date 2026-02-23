@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchProducts, selectAllProducts, selectProductsStatus } from '../features/products/productsSlice';
 import Button from '../components/ui/Button';
 import ProductCard from '../components/ProductCard';
+import Loader from '../components/Loader';
 import { API_URL } from '../config/api';
 
 const COLLECTION_META = {
@@ -145,7 +146,7 @@ const ProductList = () => {
   const hasActiveFilters = searchQuery || filterCategory !== 'All' || sortOrder !== 'default';
 
   if (status === 'loading') {
-    return <div className="text-center py-24 text-[#666666]">Loading products...</div>;
+    return <Loader />;
   }
 
   return (
