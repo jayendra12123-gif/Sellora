@@ -53,7 +53,7 @@ export default function AdminOrders() {
                       {order.userName || order.userEmail || 'Unknown'}
                     </div>
                   </div>
-                  <div style={{ fontSize: '0.9rem' }}>Total: ${Number(order.total || 0).toFixed(2)}</div>
+                  <div style={{ fontSize: '0.9rem' }}>Total: ₹{Number(order.total || 0).toFixed(2)}</div>
                   <select
                     className="select"
                     value={order.status}

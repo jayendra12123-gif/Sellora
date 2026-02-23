@@ -62,9 +62,9 @@ const ProductCard = ({ product, compact = false, showAddToCart = false }) => {
         
         <div className={`mt-auto flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between ${showAddToCart ? 'pt-4 border-t border-[#e8e8e8]' : ''}`}>
           <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
-            <span className="text-lg font-bold text-[#d4af88]">${safePrice.toFixed(2)}</span>
+            <span className="text-lg font-bold text-[#d4af88]">₹{safePrice.toFixed(2)}</span>
             {product.originalPrice ? (
-              <span className="text-xs text-[#999999] line-through">${Number(product.originalPrice).toFixed(2)}</span>
+              <span className="text-xs text-[#999999] line-through">₹{Number(product.originalPrice).toFixed(2)}</span>
             ) : null}
             {product.discountPercent > 0 && (
               <span className="inline-flex items-center justify-center whitespace-nowrap shrink-0 px-2 py-1 rounded-full border border-emerald-200 bg-emerald-500 text-white text-[10px] font-semibold leading-none">

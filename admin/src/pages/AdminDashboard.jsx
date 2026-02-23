@@ -33,7 +33,7 @@ export default function AdminDashboard() {
           { label: 'Total Users', value: summary?.users ?? '-' },
           { label: 'Collections', value: summary?.collections ?? '-' },
           { label: 'Pending Orders', value: summary?.pendingOrders ?? '-' },
-          { label: 'Revenue', value: summary ? `$${Number(summary.revenue || 0).toFixed(2)}` : '-' },
+          { label: 'Revenue', value: summary ? `₹${Number(summary.revenue || 0).toFixed(2)}` : '-' },
         ].map((card) => (
           <div key={card.label} className="card">
             <div style={{ fontSize: '0.7rem', textTransform: 'uppercase', letterSpacing: '0.2em', color: '#7a6a50' }}>
@@ -64,7 +64,7 @@ export default function AdminDashboard() {
                 <tr key={order.id}>
                   <td>{order.id}</td>
                   <td>{order.userName || order.userEmail || 'Unknown'}</td>
-                  <td>${Number(order.total || 0).toFixed(2)}</td>
+                  <td>₹{Number(order.total || 0).toFixed(2)}</td>
                   <td style={{ textTransform: 'capitalize' }}>{order.status}</td>
                 </tr>
               ))}

@@ -31,7 +31,7 @@ const CartItem = ({ item }) => {
               </span>
             )}
           </div>
-          <p className="font-bold text-[#d4af88]">${item.price.toFixed(2)}</p>
+          <p className="font-bold text-[#d4af88]">₹{item.price.toFixed(2)}</p>
         </div>
 
         {/* Controls */}
@@ -58,7 +58,7 @@ const CartItem = ({ item }) => {
           <div className="text-right">
             <p className="text-xs text-[#666666] mb-1">Subtotal</p>
             <p className="font-semibold text-[#1a1a1a] text-lg">
-              ${(item.price * item.quantity).toFixed(2)}
+              ₹{(item.price * item.quantity).toFixed(2)}
             </p>
           </div>
 

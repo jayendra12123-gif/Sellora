@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { CheckCircle, User, Mail, MapPin, Phone } from 'lucide-react';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectCartItems, selectCartTotalPrice, clearCart } from '../features/cart/cartSlice';
-import { createOrder } from '../features/orders/ordersSlice';
+import { API_URL } from '../config/api';
 import { selectAllAddresses } from '../features/addresses/addressesSlice';
 import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
@@ -191,6 +191,19 @@ const Checkout = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  const loadRazorpayScript = () => new Promise((resolve) => {
+    if (document.querySelector('script[src="https://checkout.razorpay.com/v1/checkout.js"]')) {
+      resolve(true);
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -227,31 +240,124 @@ const Checkout = () => {
           country: formData.country
         };
 
-    const orderData = {
-      items: cart.map((item) => ({
-        id: item.id,
-        title: item.title || item.name || 'Product',
-        price: item.price,
-        quantity: item.quantity,
-        image: item.image,
-        discountPercent: item.discountPercent || 0,
-        isBestSeller: !!item.isBestSeller
-      })),
-      total: finalTotal,
-      shippingAddress,
-      paymentMethod: 'card'
-    };
-
     try {
-      await dispatch(createOrder(orderData)).unwrap();
-      dispatch(clearCart());
-      setIsSuccess(true);
+      const token = localStorage.getItem('authToken');
+      if (!token) {
+        throw new Error('Not authenticated');
+      }
+
+      const createResponse = await fetch(`${API_URL}/payments/create-order`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          items: cart.map((item) => ({ id: item.id, quantity: item.quantity })),
+          shippingAddress
+        })
+      });
+
+      const createData = await createResponse.json();
+      if (!createResponse.ok) {
+        throw new Error(createData.message || 'Failed to initialize payment');
+      }
+
+      const scriptLoaded = await loadRazorpayScript();
+      if (!scriptLoaded) {
+        throw new Error('Failed to load Razorpay checkout');
+      }
+
+      const options = {
+        key: createData.keyId,
+        amount: createData.amount,
+        currency: createData.currency,
+        name: 'Sellora',
+        description: 'Order payment',
+        order_id: createData.razorpayOrderId,
+        prefill: {
+          name: shippingAddress?.name || authUser?.name || '',
+          email: shippingAddress?.email || authUser?.email || '',
+          contact: shippingAddress?.phone || ''
+        },
+        notes: {
+          orderId: createData.orderId
+        },
+        handler: async (response) => {
+          try {
+            const verifyResponse = await fetch(`${API_URL}/payments/verify-payment`, {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                razorpay_payment_id: response.razorpay_payment_id,
+                razorpay_order_id: response.razorpay_order_id,
+                razorpay_signature: response.razorpay_signature
+              })
+            });
+
+            const verifyData = await verifyResponse.json();
+            if (!verifyResponse.ok) {
+              throw new Error(verifyData.message || 'Payment verification failed');
+            }
+
+            dispatch(clearCart());
+            setIsSuccess(true);
+          } catch (verifyError) {
+            setErrors((prev) => ({
+              ...prev,
+              submit: verifyError.message || 'Payment verification failed. Please contact support.'
+            }));
+          } finally {
+            setIsProcessing(false);
+          }
+        },
+        modal: {
+          ondismiss: async () => {
+            await fetch(`${API_URL}/payments/verify-payment`, {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                razorpay_order_id: createData.razorpayOrderId,
+                status: 'failed'
+              })
+            }).catch(() => {});
+            setIsProcessing(false);
+          }
+        }
+      };
+
+      const razorpay = new window.Razorpay(options);
+      razorpay.on('payment.failed', async () => {
+        await fetch(`${API_URL}/payments/verify-payment`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            razorpay_order_id: createData.razorpayOrderId,
+            status: 'failed'
+          })
+        }).catch(() => {});
+        setErrors((prev) => ({
+          ...prev,
+          submit: 'Payment failed. Please try again.'
+        }));
+        setIsProcessing(false);
+      });
+
+      razorpay.open();
     } catch (error) {
       setErrors((prev) => ({
         ...prev,
-        submit: typeof error === 'string' ? error : 'Failed to place order. Please try again.'
+        submit: error?.message || 'Failed to start payment. Please try again.'
       }));
-    } finally {
       setIsProcessing(false);
     }
   };
@@ -354,7 +460,7 @@ const Checkout = () => {
                   <p className="text-sm text-[#666666] text-center">This is a secure mock checkout. No real payment information is processed.</p>
                 </div>
                 <Button type="submit" variant="primary" isLoading={isProcessing} disabled={isProcessing} className="w-full py-4">
-                  {isProcessing ? 'Processing...' : `Pay $${finalTotal.toFixed(2)}`}
+                  {isProcessing ? 'Processing...' : `Pay ₹${finalTotal.toFixed(2)}`}
                 </Button>
               </div>
             </form>
@@ -377,15 +483,15 @@ const Checkout = () => {
                       </div>
                       <p className="text-xs text-[#666666]">Qty: {item.quantity}</p>
                     </div>
-                    <div className="text-sm font-bold text-[#d4af88] whitespace-nowrap">${(item.price * item.quantity).toFixed(2)}</div>
+                    <div className="text-sm font-bold text-[#d4af88] whitespace-nowrap">₹{(item.price * item.quantity).toFixed(2)}</div>
                   </div>
                 ))}
               </div>
 
               <div className="space-y-3">
-                <div className="flex justify-between text-[#666666] text-sm"><span>Subtotal</span><span>${totalPrice.toFixed(2)}</span></div>
-                <div className="flex justify-between text-[#666666] text-sm"><span>Tax (8%)</span><span>${taxAmount.toFixed(2)}</span></div>
-                <div className="flex justify-between pt-3 border-t border-[#e8e8e8]"><span className="font-semibold text-[#1a1a1a]">Total</span><span className="text-2xl font-bold text-[#d4af88]">${finalTotal.toFixed(2)}</span></div>
+                <div className="flex justify-between text-[#666666] text-sm"><span>Subtotal</span><span>₹{totalPrice.toFixed(2)}</span></div>
+                <div className="flex justify-between text-[#666666] text-sm"><span>Tax (8%)</span><span>₹{taxAmount.toFixed(2)}</span></div>
+                <div className="flex justify-between pt-3 border-t border-[#e8e8e8]"><span className="font-semibold text-[#1a1a1a]">Total</span><span className="text-2xl font-bold text-[#d4af88]">₹{finalTotal.toFixed(2)}</span></div>
               </div>
             </Card>
           </div>

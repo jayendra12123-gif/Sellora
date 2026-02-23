@@ -123,45 +123,47 @@ const ProductDetails = () => {
               <p className="text-[#666666] text-sm mb-2">Price</p>
               <div className="flex items-end gap-3">
                 <p className="text-5xl font-bold text-[#1a1a1a]">
-                  ${product.price.toFixed(2)}
+                  ₹{product.price.toFixed(2)}
                 </p>
                 {originalPrice && (
                   <p className="text-xl text-[#999999] line-through mb-1">
-                    ${originalPrice.toFixed(2)}
+                    ₹{originalPrice.toFixed(2)}
                   </p>
                 )}
               </div>
               {discountPercent > 0 && (
                 <p className="text-sm text-[#d4af88] font-semibold mt-2">
-                  You save ${savingsAmount.toFixed(2)} ({discountPercent}% off)
+                  You save ₹{savingsAmount.toFixed(2)} ({discountPercent}% off)
                 </p>
               )}
             </div>
 
             {/* Quantity & Add to Cart */}
             <div className="space-y-4">
-              <div>
-                <p className="text-xs font-semibold text-[#666666] uppercase tracking-widest mb-3">
-                  Quantity
-                </p>
-                <div className="flex items-center border border-[#e8e8e8] w-fit">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="px-4 py-2 hover:bg-[#f5f5f5] transition-colors"
-                  >
-                    −
-                  </button>
-                  <div className="flex-1 w-12 text-center font-semibold text-[#1a1a1a]">
-                    {quantity}
+              {!isInCart && (
+                <div>
+                  <p className="text-xs font-semibold text-[#666666] uppercase tracking-widest mb-3">
+                    Quantity
+                  </p>
+                  <div className="flex items-center border border-[#e8e8e8] w-fit">
+                    <button
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="px-4 py-2 hover:bg-[#f5f5f5] transition-colors"
+                    >
+                      −
+                    </button>
+                    <div className="flex-1 w-12 text-center font-semibold text-[#1a1a1a]">
+                      {quantity}
+                    </div>
+                    <button
+                      onClick={() => setQuantity(quantity + 1)}
+                      className="px-4 py-2 hover:bg-[#f5f5f5] transition-colors"
+                    >
+                      +
+                    </button>
                   </div>
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="px-4 py-2 hover:bg-[#f5f5f5] transition-colors"
-                  >
-                    +
-                  </button>
                 </div>
-              </div>
+              )}
 
               {/* Add to Cart Button */}
               <div className="space-y-3">

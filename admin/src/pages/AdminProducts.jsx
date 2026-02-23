@@ -211,7 +211,7 @@ export default function AdminProducts() {
                       )}
                     </td>
                     <td>{product.category}</td>
-                    <td>${Number(product.price || 0).toFixed(2)}</td>
+                    <td>₹{Number(product.price || 0).toFixed(2)}</td>
                     <td>
                       <span
                         className={

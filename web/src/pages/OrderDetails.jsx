@@ -216,8 +216,8 @@ export default function OrderDetails() {
                         <p className="text-sm text-[#666666] mt-1">Qty: {item.quantity}</p>
                       </div>
                       <div className="text-right flex-shrink-0">
-                        <p className="font-semibold text-[#1a1a1a]">${(item.price * item.quantity).toFixed(2)}</p>
-                        <p className="text-sm text-[#666666]">${item.price.toFixed(2)} each</p>
+                        <p className="font-semibold text-[#1a1a1a]">₹{(item.price * item.quantity).toFixed(2)}</p>
+                        <p className="text-sm text-[#666666]">₹{item.price.toFixed(2)} each</p>
                       </div>
                     </div>
                   ))}
@@ -295,7 +295,7 @@ export default function OrderDetails() {
                 <div className="space-y-3 mb-6">
                   <div className="flex justify-between">
                     <span className="text-[#666666]">Subtotal</span>
-                    <span className="text-[#1a1a1a] font-medium">${order.total ? (order.total * 0.9).toFixed(2) : '0.00'}</span>
+                    <span className="text-[#1a1a1a] font-medium">₹{order.total ? (order.total * 0.9).toFixed(2) : '0.00'}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-[#666666]">Shipping</span>
@@ -303,11 +303,11 @@ export default function OrderDetails() {
                   </div>
                   <div className="flex justify-between">
                     <span className="text-[#666666]">Tax</span>
-                    <span className="text-[#1a1a1a] font-medium">${order.total ? (order.total * 0.1).toFixed(2) : '0.00'}</span>
+                    <span className="text-[#1a1a1a] font-medium">₹{order.total ? (order.total * 0.1).toFixed(2) : '0.00'}</span>
                   </div>
                   <div className="border-t border-[#e8e8e8] pt-3 flex justify-between">
                     <span className="font-semibold text-[#1a1a1a]">Total</span>
-                    <span className="text-xl font-serif font-bold text-[#1a1a1a]">${order.total?.toFixed(2)}</span>
+                    <span className="text-xl font-serif font-bold text-[#1a1a1a]">₹{order.total?.toFixed(2)}</span>
                   </div>
                 </div>
               </div>

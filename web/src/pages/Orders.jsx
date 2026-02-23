@@ -139,7 +139,7 @@ export default function Orders() {
                           <p className="font-semibold text-[#1a1a1a] line-clamp-1">{item.title}</p>
                           <p className="text-sm text-[#666666]">Qty: {item.quantity}</p>
                         </div>
-                        <p className="font-semibold text-[#1a1a1a]">${(item.price * item.quantity).toFixed(2)}</p>
+                        <p className="font-semibold text-[#1a1a1a]">₹{(item.price * item.quantity).toFixed(2)}</p>
                       </div>
                     ))}
                     {order.items && order.items.length > 3 && (
@@ -153,7 +153,7 @@ export default function Orders() {
                   <div className="flex flex-wrap items-center justify-between pt-4 border-t border-[#e8e8e8] gap-4">
                     <div>
                       <p className="text-xs font-semibold text-[#666666] uppercase tracking-wide">Total Amount</p>
-                      <p className="text-2xl font-serif font-bold text-[#1a1a1a]">${order.total?.toFixed(2)}</p>
+                      <p className="text-2xl font-serif font-bold text-[#1a1a1a]">₹{order.total?.toFixed(2)}</p>
                     </div>
                     <div className="flex items-center gap-3">
                       <Link 
@@ -174,4 +174,3 @@ export default function Orders() {
     </div>
   );
 }
-

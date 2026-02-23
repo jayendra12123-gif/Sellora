@@ -145,9 +145,17 @@ const createOrder = async (session, payload) => {
     userName: user?.name || 'Unknown',
     userEmail: user?.email || 'Unknown',
     items: normalizedItems,
+    products: normalizedItems.map((item) => ({
+      productId: item.id,
+      quantity: item.quantity,
+      priceAtPurchase: Number(item.price || 0),
+    })),
     total: parsedTotal,
+    totalAmount: parsedTotal,
+    currency: payload.currency || 'INR',
     shippingAddress: shippingAddress || {},
     paymentMethod: paymentMethod || 'card',
+    paymentStatus: 'paid',
     status: 'processing',
   });
 

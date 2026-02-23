@@ -6,6 +6,7 @@ import AdminLayout from './pages/AdminLayout';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminProducts from './pages/AdminProducts';
 import AdminOrders from './pages/AdminOrders';
+import AdminTransactions from './pages/AdminTransactions';
 import AdminUsers from './pages/AdminUsers';
 import AdminCollections from './pages/AdminCollections';
 import AdminContent from './pages/AdminContent';
@@ -59,6 +60,7 @@ export default function App() {
         <Route index element={<AdminDashboard />} />
         <Route path="products" element={<AdminProducts />} />
         <Route path="orders" element={<AdminOrders />} />
+        <Route path="transactions" element={<AdminTransactions />} />
         <Route path="users" element={<AdminUsers />} />
         <Route path="collections" element={<AdminCollections />} />
         <Route path="content" element={<AdminContent />} />

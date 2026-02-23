@@ -12,6 +12,7 @@ const addressRoutes = require('./addressRoutes');
 const preferenceRoutes = require('./preferenceRoutes');
 const favoriteRoutes = require('./favoriteRoutes');
 const adminRoutes = require('./adminRoutes');
+const paymentRoutes = require('./payment.routes');
 
 const router = express.Router();
 
@@ -28,5 +29,6 @@ router.use('/', addressRoutes);
 router.use('/', preferenceRoutes);
 router.use('/', favoriteRoutes);
 router.use('/', adminRoutes);
+router.use('/', paymentRoutes);
 
 module.exports = router;
