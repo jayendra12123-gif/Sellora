@@ -15,7 +15,7 @@ From `web/`:
 cp .env.example .env
 ```
 
-`VITE_API_BASE_URL` should point to your backend API (default: `http://localhost:5000`).
+`VITE_API_BASE_URL` should point to your backend base URL (default: `http://localhost:5000`). The app appends `/api`.
 
 ## Run
 

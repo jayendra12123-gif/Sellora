@@ -45,19 +45,21 @@ CORS_ORIGINS=http://localhost:5173,http://localhost:5174
 
 ### Web (`web/.env`)
 
-- `VITE_API_URL` (preferred) full API URL that ends with `/api`
-- or `VITE_API_BASE_URL` (fallback) base URL (the app appends `/api`)
+- `VITE_API_BASE_URL` (optional) base URL (the app appends `/api`)
+  - Defaults to `http://<host>:5000` based on the current browser host
 
 ### Admin (`admin/.env`)
 
-- `VITE_API_URL` (preferred) full API URL that ends with `/api`
-- or `VITE_ADMIN_API_BASE_URL` (fallback) base URL (the app appends `/api`)
+- `VITE_ADMIN_API_BASE_URL` (optional) base URL (the app appends `/api`)
+  - Defaults to `http://<host>:5000` based on the current browser host
 
 ## Quick Start (Backend + Web)
 
 ```bash
 ./setup.sh
 ```
+
+This script starts the backend and the web app only. Run the admin app separately if needed.
 
 ## Manual Setup
 
@@ -99,6 +101,10 @@ npm run dev
 ```
 
 Admin app runs at `http://localhost:5174` by default (or the next available port).
+
+**Default admin login (dev only)**
+- Email: `admin@sellora.com`
+- Password: `Sellora123`
 
 ## Common Ports
 
@@ -161,7 +167,7 @@ Create a Vercel project with **Root Directory** set to `web/`.
 - Output directory: `dist`
 
 **Env vars**
-- `VITE_API_URL` = `https://sellora-5f0s.onrender.com/api`
+- `VITE_API_BASE_URL` = `https://sellora-5f0s.onrender.com`
 
 ### 3) Deploy Admin (Vercel)
 
@@ -172,7 +178,7 @@ Create another Vercel project with **Root Directory** set to `admin/`.
 - Output directory: `dist`
 
 **Env vars**
-- `VITE_API_URL` = `https://sellora-5f0s.onrender.com/api`
+- `VITE_ADMIN_API_BASE_URL` = `https://sellora-5f0s.onrender.com`
 
 ### Notes
 
@@ -184,7 +190,7 @@ Create another Vercel project with **Root Directory** set to `admin/`.
 - **Frontend shows “Not Found” on refresh**  
   Ensure `web/vercel.json` and `admin/vercel.json` are present for SPA rewrites.
 - **API calls failing**  
-  Verify `VITE_API_URL` is set in Vercel and redeploy.
+  Verify the correct `VITE_API_BASE_URL`/`VITE_ADMIN_API_BASE_URL` is set in Vercel and redeploy.
 - **CORS errors**  
   Add your Vercel domains to `CORS_ORIGINS` on the backend and redeploy Render.
 

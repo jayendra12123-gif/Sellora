@@ -20,6 +20,7 @@ Key variables:
 
 - `MONGODB_URI`
 - `PORT`
+- `CORS_ORIGINS`
 - `SESSION_TTL_DAYS`
 - `PASSWORD_RESET_TTL_MINUTES`
 - `BCRYPT_SALT_ROUNDS`
@@ -45,6 +46,12 @@ npm start
 
 - `npm run dev`
 - `npm start`
+
+## Default Admin (Dev)
+
+On startup, the server ensures a default admin user exists:
+- Email: `admin@sellora.com`
+- Password: `Sellora123`
 
 ## API Overview
 
