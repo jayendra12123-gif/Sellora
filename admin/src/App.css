@@ -121,6 +121,34 @@ a {
   gap: 8px;
 }
 
+.admin-brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-close-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.admin-close-button:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.admin-close-button svg {
+  width: 16px;
+  height: 16px;
+}
+
 .admin-brand .kicker {
   font-size: 0.7rem;
   text-transform: uppercase;
@@ -202,6 +230,34 @@ a {
   gap: 20px;
 }
 
+.admin-header-title {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.admin-menu-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid var(--ink-soft);
+  background: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.admin-menu-button:hover {
+  background: #f6f1ea;
+}
+
+.admin-menu-button svg {
+  width: 18px;
+  height: 18px;
+}
+
 .admin-header .kicker {
   font-size: 0.7rem;
   text-transform: uppercase;
@@ -213,6 +269,9 @@ a {
   font-size: 1.3rem;
   font-weight: 600;
   margin: 6px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .admin-header .meta {
@@ -220,11 +279,30 @@ a {
   color: var(--muted);
 }
 
+.admin-headline-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #121212;
+  color: #fff;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+}
+
 .admin-content {
   padding: 30px 32px 40px;
   display: flex;
   flex-direction: column;
   gap: 24px;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) minmax(280px, 2fr);
+  gap: 20px;
 }
 
 .card {
@@ -590,25 +668,133 @@ a {
   }
 
   .admin-sidebar {
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 30;
+    width: min(86vw, 320px);
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    flex-direction: column;
+    padding: 24px;
+    overflow-y: auto;
+  }
+
+  .admin-shell.sidebar-open .admin-sidebar {
+    transform: translateX(0);
+  }
+
+  .admin-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(18, 18, 18, 0.32);
     z-index: 20;
-    flex-direction: row;
-    flex-wrap: wrap;
+    border: none;
+    padding: 0;
   }
 
   .admin-nav {
-    flex-direction: row;
-    gap: 6px;
+    flex-direction: column;
     width: 100%;
-    overflow-x: auto;
+    overflow: visible;
+  }
+
+  .admin-brand {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .admin-close-button {
+    display: inline-flex;
+  }
+
+  .admin-main {
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .admin-content {
+    padding: 20px;
+  }
+
+  .admin-header {
+    padding: 18px 20px;
+  }
+}
+
+.admin-overlay {
+  display: none;
+}
+
+.admin-shell:not(.sidebar-open) {
+  grid-template-columns: 1fr;
+}
+
+.admin-shell:not(.sidebar-open) .admin-sidebar {
+  transform: translateX(-100%);
+}
+
+@media (min-width: 1025px) {
+  .admin-shell:not(.sidebar-open) .admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 280px;
+  }
+}
+
+@media (max-width: 720px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-header .kicker,
+  .section-kicker {
+    letter-spacing: 0.22em;
+  }
+
+  .admin-header .headline {
+    font-size: 1.1rem;
+  }
+
+  .admin-headline-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 0.75rem;
+  }
+
+  .section-title {
+    font-size: 1.05rem;
   }
 
   .admin-nav a {
+    font-size: 0.95rem;
+  }
+
+  .table {
+    font-size: 0.85rem;
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
     white-space: nowrap;
   }
 
-  .admin-user {
-    width: 100%;
+  .table th,
+  .table td {
+    padding: 10px 6px;
+  }
+
+  .card {
+    padding: 18px;
+  }
+
+  .input,
+  .select,
+  .textarea {
+    font-size: 0.9rem;
+    padding: 9px 10px;
   }
 }

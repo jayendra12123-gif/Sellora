@@ -69,7 +69,7 @@ export default function AdminContent() {
 
   return (
     <div className="grid" style={{ gap: 20 }}>
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(220px, 1fr) 2fr', gap: 20 }}>
+      <div className="content-grid">
         <div className="card">
           <div style={{ fontSize: '1.05rem', fontWeight: 600, marginBottom: 12 }}>Content Keys</div>
           <div style={{ display: 'grid', gap: 8 }}>
