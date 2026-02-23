@@ -33,20 +33,6 @@ const tabs = [
     icon: Shield,
     available: true,
   },
-  {
-    to: '#',
-    title: 'Payment Methods',
-    description: 'Store and manage payment options',
-    icon: CreditCard,
-    available: false,
-  },
-  {
-    to: '#',
-    title: 'Notifications',
-    description: 'Control email and order alerts',
-    icon: Bell,
-    available: false,
-  },
 ];
 
 export default function Settings() {
