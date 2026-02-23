@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Home, Briefcase, MapPin, Plus, Pencil, Trash2, Star, Loader } from 'lucide-react';
+import { Home, Briefcase, MapPin, Plus, Pencil, Trash2, Star } from 'lucide-react';
+import Loader from '../components/Loader';
 import {
   fetchAddresses,
   createAddress,
@@ -125,7 +126,7 @@ export default function SavedAddresses() {
   if (loading && addresses.length === 0) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16 flex items-center justify-center">
-        <Loader className="w-8 h-8 animate-spin text-[#d4af88]" />
+        <Loader size={32} minHeight="0" />
       </div>
     );
   }

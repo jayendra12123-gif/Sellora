@@ -57,7 +57,14 @@ export default function Login() {
           />
           <div className="login-actions">
             <button className="button" type="submit" disabled={loading}>
-              {loading ? 'Signing in...' : 'Sign in'}
+              {loading ? (
+                <span className="button-spinner-wrap">
+                  <span className="admin-button-spinner" />
+                  Signing in...
+                </span>
+              ) : (
+                'Sign in'
+              )}
             </button>
             <button className="button secondary" type="button" onClick={() => { setEmail('admin@sellora.com'); setPassword('Sellora123'); }}>
               Use default admin

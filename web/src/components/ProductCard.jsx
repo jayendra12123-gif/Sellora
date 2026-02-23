@@ -60,8 +60,8 @@ const ProductCard = ({ product, compact = false, showAddToCart = false }) => {
           </div>
         )}
         
-        <div className={`mt-auto flex items-center justify-between ${showAddToCart ? 'pt-4 border-t border-[#e8e8e8]' : ''}`}>
-          <div className="flex flex-wrap items-center gap-2">
+        <div className={`mt-auto flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between ${showAddToCart ? 'pt-4 border-t border-[#e8e8e8]' : ''}`}>
+          <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
             <span className="text-lg font-bold text-[#d4af88]">${safePrice.toFixed(2)}</span>
             {product.originalPrice ? (
               <span className="text-xs text-[#999999] line-through">${Number(product.originalPrice).toFixed(2)}</span>
@@ -81,7 +81,7 @@ const ProductCard = ({ product, compact = false, showAddToCart = false }) => {
                 }
                 dispatch(addToCart({ product, quantity: 1 }));
               }}
-              className="flex items-center gap-1 bg-[#1a1a1a] text-white px-3 py-2 text-sm font-semibold hover:bg-[#2d2d2d] active:scale-95 transition uppercase tracking-wide"
+              className="flex items-center justify-center gap-1 bg-[#1a1a1a] text-white px-3 py-2 text-xs sm:text-sm font-semibold hover:bg-[#2d2d2d] active:scale-95 transition uppercase tracking-wide w-full sm:w-auto"
             >
               <Plus className="w-4 h-4" />
               Add
