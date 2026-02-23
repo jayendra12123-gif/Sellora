@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { LockKeyhole } from 'lucide-react';
 import { API_URL } from '../config/api';
+import Loader from '../components/Loader';
 
 export default function PrivacyPolicy() {
   const [content, setContent] = useState(null);
@@ -31,11 +32,7 @@ export default function PrivacyPolicy() {
   }, []);
 
   if (loading) {
-    return (
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <p className="text-[#666666]">Loading Privacy Policy...</p>
-      </div>
-    );
+    return <Loader />;
   }
 
   if (error) {

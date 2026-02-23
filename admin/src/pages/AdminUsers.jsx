@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { adminDelete, adminGet, adminPut } from '../api';
+import Loader from '../components/Loader';
 
 export default function AdminUsers() {
   const [users, setUsers] = useState([]);
@@ -48,7 +49,7 @@ export default function AdminUsers() {
         <div style={{ fontSize: '1.05rem', fontWeight: 600, marginBottom: 12 }}>Users</div>
         {error && <div style={{ color: '#c0392b', marginBottom: 12 }}>{error}</div>}
         {loading ? (
-          <div style={{ color: '#6b6b6b' }}>Loading...</div>
+          <Loader />
         ) : (
           <div style={{ overflowX: 'auto' }}>
             <table className="table">

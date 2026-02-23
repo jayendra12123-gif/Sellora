@@ -8,6 +8,7 @@ import { selectIsFavorite, toggleFavorite } from '../features/favorites/favorite
 import Button from '../components/ui/Button';
 import Card from '../components/ui/Card';
 import Section from '../components/ui/Section';
+import Loader from '../components/Loader';
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -34,7 +35,7 @@ const ProductDetails = () => {
   }, [added]);
 
   if (status === 'loading') {
-    return <div className="text-center py-24 text-[#666666]">Loading...</div>;
+    return <Loader />;
   }
 
   if (!product) {

@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { adminDelete, adminGet, adminPost, adminPut } from "../api";
+import Loader from "../components/Loader";
 
 const emptyForm = {
   id: "",
@@ -182,7 +183,7 @@ export default function AdminProducts() {
         </div>
 
         {loading ? (
-          <div style={{ color: "#6b6b6b" }}>Loading...</div>
+          <Loader />
         ) : (
           <div style={{ overflowX: "auto" }}>
             <table className="table">
